@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "aaa-tic-tac-toe"
+version = "0.1.0"
+description = "tg bot for tictactoe game"
+authors = ["ShEvVl <shornikov.ev.vl@gmail.com>"]
+readme = "README.md"
+packages = [
+    {include = "src/**/*.py"},
+    {include = "tests/**/*.py"}
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+python-telegram-bot = "^20.7"
+python-dotenv = "^1.0.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.4"
+mypy = "^1.8.0"
+flake8 = "^7.0.0"
+pytest-asyncio = "^0.23.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
