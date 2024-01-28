@@ -39,20 +39,20 @@ class TicTacToeGame:
         :param player: Игрок для проверки ('X' или 'O').
         :return: True, если игрок выиграл, иначе False.
         """
-        # Проверка строк, столбцов и диагоналей
-        for i in range(3):
-            if all(self.board[i][j] == player for j in range(3)) or all(
-                self.board[j][i] == player for j in range(3)
-            ):
+        win_conditions = [
+            ['00', '01', '02'],
+            ['10', '11', '12'],
+            ['20', '21', '22'],
+            ['00', '10', '20'],
+            ['01', '11', '21'],
+            ['02', '12', '22'],
+            ['00', '11', '22'],
+            ['02', '11', '20'],
+        ]
+
+        for condition in win_conditions:
+            if all(self.board[int(pos[0])][int(pos[1])] == player for pos in condition):
                 return True
-        if (
-            self.board[0][0] == self.board[1][1] == self.board[2][2] == player
-            or self.board[0][2]
-            == self.board[1][1]
-            == self.board[2][0]
-            == player
-        ):
-            return True
         return False
 
     def get_empty_cells(self) -> List[Tuple[int, int]]:

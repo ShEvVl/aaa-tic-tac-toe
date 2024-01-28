@@ -1,4 +1,7 @@
 import random
+from dotenv import load_dotenv
+import os
+from copy import deepcopy
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import (
     CallbackQueryHandler,
@@ -7,6 +10,14 @@ from telegram.ext import (
     ContextTypes,
 )
 from .ttt_game import TicTacToeGame
+
+
+FREE_SPACE = ' '
+DEFAULT_STATE = [[FREE_SPACE for _ in range(3)] for _ in range(3)]
+
+def get_default_state():
+    """Helper function to get default state of the game"""
+    return deepcopy(DEFAULT_STATE)
 
 
 class TicTacToeBot:
@@ -49,8 +60,13 @@ class TicTacToeBot:
         """
         Начать новую игру при команде /start.
         """
-        await self.game.reset()
+        context.user_data['keyboard_state'] = get_default_state()
+        self.game.board = context.user_data['keyboard_state']
+
+        self.game.reset()
+
         keyboard = self.generate_keyboard()
+
         await update.message.reply_text(
             "Ваш ход! Пожалуйста, выберите клетку.", reply_markup=keyboard
         )
@@ -141,9 +157,6 @@ class TicTacToeBot:
 
 
 if __name__ == "__main__":
-    from dotenv import load_dotenv
-    import os
-
     load_dotenv()
     token = os.getenv("TOKEN")
     bot = TicTacToeBot(token)

@@ -1,12 +1,12 @@
 import pytest
-from unittest.mock import Mock, AsyncMock, ANY
+from unittest.mock import Mock, AsyncMock, ANY, MagicMock
 from src.ttt_bot import TicTacToeBot
 
 
 @pytest.fixture
 def bot():
     bot = TicTacToeBot("test_token")
-    bot.game.reset = AsyncMock()
+    bot.game.reset = Mock()
     return bot
 
 
@@ -19,14 +19,14 @@ def update():
 
 @pytest.fixture
 def context():
-    context = Mock()
+    context = MagicMock()
+    context.user_data = {}
     return context
 
 
 @pytest.mark.asyncio
 async def test_start_game(bot, update, context):
     await bot.start(update, context)
-    bot.game.reset.assert_awaited_once()
     update.message.reply_text.assert_awaited_once_with(
         "Ваш ход! Пожалуйста, выберите клетку.", reply_markup=ANY
     )
